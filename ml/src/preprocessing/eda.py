@@ -103,7 +103,9 @@ class ExploratoryAnalyzer:
         fig, axes = plt.subplots(1, 2, figsize=FIGURE_SIZE_WIDE, dpi=FIGURE_DPI)
 
         # Bar chart
-        bars = axes[0].bar(labels, counts.values, color=colors, edgecolor="white", linewidth=1.2)
+        bars = axes[0].bar(
+            labels, counts.values, color=colors, edgecolor="white", linewidth=1.2
+        )
         axes[0].set_title("Class Distribution — Count", fontsize=14, pad=12)
         axes[0].set_ylabel("Count")
         for bar, count in zip(bars, counts.values):
@@ -111,7 +113,9 @@ class ExploratoryAnalyzer:
                 bar.get_x() + bar.get_width() / 2,
                 bar.get_height() + total * 0.005,
                 f"{count:,}",
-                ha="center", fontsize=11, fontweight="bold",
+                ha="center",
+                fontsize=11,
+                fontweight="bold",
             )
 
         # Pie chart
@@ -136,11 +140,24 @@ class ExploratoryAnalyzer:
         fig, axes = plt.subplots(1, 2, figsize=FIGURE_SIZE_WIDE, dpi=FIGURE_DPI)
         for ax, cls, label in zip(axes, [0, 1], ["Normal", "Fraud"]):
             subset = self.df[self.df[TARGET_COLUMN] == cls]["Amount"]
-            ax.hist(subset, bins=60, color=PALETTE[cls], alpha=0.8, edgecolor="white", linewidth=0.4)
+            ax.hist(
+                subset,
+                bins=60,
+                color=PALETTE[cls],
+                alpha=0.8,
+                edgecolor="white",
+                linewidth=0.4,
+            )
             ax.set_title(f"Transaction Amount — {label}", fontsize=13)
             ax.set_xlabel("Amount (USD)")
             ax.set_ylabel("Frequency")
-            ax.axvline(subset.median(), color="black", linestyle="--", linewidth=1.2, label=f"Median: ${subset.median():.2f}")
+            ax.axvline(
+                subset.median(),
+                color="black",
+                linestyle="--",
+                linewidth=1.2,
+                label=f"Median: ${subset.median():.2f}",
+            )
             ax.legend(fontsize=10)
         plt.suptitle("Transaction Amount Distribution by Class", fontsize=15, y=1.01)
         plt.tight_layout()
@@ -152,7 +169,15 @@ class ExploratoryAnalyzer:
         fig, ax = plt.subplots(figsize=FIGURE_SIZE_WIDE, dpi=FIGURE_DPI)
         for cls, label in [(0, "Normal"), (1, "Fraud")]:
             subset = self.df[self.df[TARGET_COLUMN] == cls]["Time"]
-            ax.hist(subset, bins=80, alpha=0.6, color=PALETTE[cls], label=label, edgecolor="none", density=True)
+            ax.hist(
+                subset,
+                bins=80,
+                alpha=0.6,
+                color=PALETTE[cls],
+                label=label,
+                edgecolor="none",
+                density=True,
+            )
         ax.set_title("Transaction Time Distribution by Class", fontsize=14)
         ax.set_xlabel("Time (seconds from first transaction)")
         ax.set_ylabel("Density")
@@ -170,7 +195,9 @@ class ExploratoryAnalyzer:
             self.df[self.df[TARGET_COLUMN] == 0]["Amount"].values,
             self.df[self.df[TARGET_COLUMN] == 1]["Amount"].values,
         ]
-        bp = axes[0].boxplot(groups, labels=["Normal (0)", "Fraud (1)"], patch_artist=True, notch=True)
+        bp = axes[0].boxplot(
+            groups, labels=["Normal (0)", "Fraud (1)"], patch_artist=True, notch=True
+        )
         for patch, color in zip(bp["boxes"], PALETTE_LIST):
             patch.set_facecolor(color)
             patch.set_alpha(0.7)
@@ -179,7 +206,9 @@ class ExploratoryAnalyzer:
 
         # Log-scale box plot to better show Fraud distribution
         axes[1].boxplot(groups, labels=["Normal (0)", "Fraud (1)"], patch_artist=True)
-        for patch, color in zip(axes[1].findobj(plt.matplotlib.patches.PathPatch), PALETTE_LIST):
+        for patch, color in zip(
+            axes[1].findobj(plt.matplotlib.patches.PathPatch), PALETTE_LIST
+        ):
             patch.set_facecolor(color)
         axes[1].set_yscale("log")
         axes[1].set_title("Amount by Class (Log Scale)", fontsize=13)
@@ -280,7 +309,9 @@ class ExploratoryAnalyzer:
             iqr = q3 - q1
             lower = q1 - 1.5 * iqr
             upper = q3 + 1.5 * iqr
-            outlier_counts[col] = int(((self.df[col] < lower) | (self.df[col] > upper)).sum())
+            outlier_counts[col] = int(
+                ((self.df[col] < lower) | (self.df[col] > upper)).sum()
+            )
 
         sorted_items = sorted(outlier_counts.items(), key=lambda x: x[1], reverse=True)
         cols, counts = zip(*sorted_items)

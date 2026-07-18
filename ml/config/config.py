@@ -25,9 +25,7 @@ TARGET_COLUMN: str = "Class"
 FEATURES_TO_SCALE: list[str] = ["Amount", "Time"]
 
 # All 30 feature columns (Time + V1–V28 + Amount)
-ALL_FEATURE_COLUMNS: list[str] = (
-    ["Time"] + [f"V{i}" for i in range(1, 29)] + ["Amount"]
-)
+ALL_FEATURE_COLUMNS: list[str] = ["Time"] + [f"V{i}" for i in range(1, 29)] + ["Amount"]
 
 # Data split ratios (must sum to 1.0)
 TRAIN_RATIO: float = 0.70

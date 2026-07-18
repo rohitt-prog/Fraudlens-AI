@@ -9,12 +9,18 @@ import numpy as np
 import pandas as pd
 
 from src.preprocessing.splitter import DataSplitter, SplitResult
-from config.config import ALL_FEATURE_COLUMNS, TARGET_COLUMN, TRAIN_RATIO, VAL_RATIO, TEST_RATIO
-
+from config.config import (
+    ALL_FEATURE_COLUMNS,
+    TARGET_COLUMN,
+    TRAIN_RATIO,
+    VAL_RATIO,
+    TEST_RATIO,
+)
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture()
 def scaled_df() -> pd.DataFrame:
@@ -49,6 +55,7 @@ def splitter() -> DataSplitter:
 # Tests
 # ---------------------------------------------------------------------------
 
+
 class TestDataSplitterRatioValidation:
     """Tests for split ratio validation."""
 
@@ -78,9 +85,7 @@ class TestDataSplitterOutputShapes:
     ) -> None:
         """Total rows across all splits must equal the original dataset size."""
         result = splitter.split(scaled_df)
-        total = (
-            len(result.y_train) + len(result.y_val) + len(result.y_test)
-        )
+        total = len(result.y_train) + len(result.y_val) + len(result.y_test)
         assert total == len(scaled_df)
 
     def test_train_split_is_largest(

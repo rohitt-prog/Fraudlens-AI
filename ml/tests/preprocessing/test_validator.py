@@ -10,12 +10,16 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-from src.preprocessing.validator import DataValidator, DataValidationError, ValidationResult
-
+from src.preprocessing.validator import (
+    DataValidator,
+    DataValidationError,
+    ValidationResult,
+)
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture()
 def minimal_df() -> pd.DataFrame:
@@ -26,7 +30,10 @@ def minimal_df() -> pd.DataFrame:
     """
     n = 200
     rng = np.random.default_rng(42)
-    data: dict[str, object] = {"Time": rng.random(n) * 172800, "Amount": rng.random(n) * 500}
+    data: dict[str, object] = {
+        "Time": rng.random(n) * 172800,
+        "Amount": rng.random(n) * 500,
+    }
     for i in range(1, 29):
         data[f"V{i}"] = rng.standard_normal(n)
     # 190 normal, 10 fraud for realistic imbalance
@@ -50,6 +57,7 @@ def report_path(tmp_path: Path) -> Path:
 # ---------------------------------------------------------------------------
 # Tests
 # ---------------------------------------------------------------------------
+
 
 class TestDataValidatorColumnChecks:
     """Tests for column-level validation checks."""
@@ -107,9 +115,15 @@ class TestDataValidatorQualityChecks:
         # All standard checks should pass on clean data
         for r in results:
             assert r.check in {
-                "dataset_dimensions", "required_columns", "datatypes",
-                "missing_values", "duplicate_rows", "target_column_integrity",
-                "target_distribution", "unique_value_counts", "memory_usage",
+                "dataset_dimensions",
+                "required_columns",
+                "datatypes",
+                "missing_values",
+                "duplicate_rows",
+                "target_column_integrity",
+                "target_distribution",
+                "unique_value_counts",
+                "memory_usage",
             }
 
 

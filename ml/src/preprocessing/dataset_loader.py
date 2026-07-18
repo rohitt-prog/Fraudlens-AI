@@ -76,9 +76,7 @@ class DatasetLoader:
                 "Please download creditcard.csv from Kaggle and place it in ml/data/raw/."
             )
         if not self.path.is_file():
-            raise DatasetLoadError(
-                f"Path exists but is not a file: '{self.path}'."
-            )
+            raise DatasetLoadError(f"Path exists but is not a file: '{self.path}'.")
 
     def _check_extension(self) -> None:
         """Verifies the file has the expected .csv extension.

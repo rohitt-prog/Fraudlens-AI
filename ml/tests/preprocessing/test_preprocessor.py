@@ -12,10 +12,10 @@ from pathlib import Path
 
 from src.preprocessing.preprocessor import DataPreprocessor, SCALER_FILENAME
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture()
 def sample_df() -> pd.DataFrame:
@@ -52,6 +52,7 @@ def preprocessor(tmp_path: Path) -> DataPreprocessor:
 # ---------------------------------------------------------------------------
 # Tests
 # ---------------------------------------------------------------------------
+
 
 class TestDataPreprocessorFitTransform:
     """Tests for the fit_transform method."""
@@ -121,6 +122,7 @@ class TestDataPreprocessorPersistence:
     ) -> None:
         """The saved scaler file must be a loadable StandardScaler pickle."""
         from sklearn.preprocessing import StandardScaler
+
         preprocessor.fit_transform(sample_df)
         with open(preprocessor.scaler_path, "rb") as f:
             loaded = pickle.load(f)

@@ -12,10 +12,10 @@ from pathlib import Path
 
 from src.preprocessing.pipeline import PreprocessingPipeline
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture()
 def synthetic_csv(tmp_path: Path) -> Path:
@@ -87,9 +87,15 @@ def pipeline(
     """
     from config import config as cfg_module
 
-    monkeypatch.setattr(cfg_module.settings, "reports_dir", pipeline_dirs["reports"], raising=False)
-    monkeypatch.setattr(cfg_module.settings, "figures_dir", pipeline_dirs["figures"], raising=False)
-    monkeypatch.setattr(cfg_module.settings, "scalers_dir", pipeline_dirs["scalers"], raising=False)
+    monkeypatch.setattr(
+        cfg_module.settings, "reports_dir", pipeline_dirs["reports"], raising=False
+    )
+    monkeypatch.setattr(
+        cfg_module.settings, "figures_dir", pipeline_dirs["figures"], raising=False
+    )
+    monkeypatch.setattr(
+        cfg_module.settings, "scalers_dir", pipeline_dirs["scalers"], raising=False
+    )
 
     return PreprocessingPipeline(
         dataset_path=synthetic_csv,
@@ -101,10 +107,13 @@ def pipeline(
 # Tests
 # ---------------------------------------------------------------------------
 
+
 class TestPreprocessingPipelineE2E:
     """End-to-end integration tests for PreprocessingPipeline.run()."""
 
-    def test_pipeline_runs_without_errors(self, pipeline: PreprocessingPipeline) -> None:
+    def test_pipeline_runs_without_errors(
+        self, pipeline: PreprocessingPipeline
+    ) -> None:
         """Pipeline completes successfully on a valid synthetic dataset."""
         arrays = pipeline.run()
         assert arrays is not None
@@ -121,7 +130,9 @@ class TestPreprocessingPipelineE2E:
         """All returned values must be NumPy ndarrays."""
         arrays = pipeline.run()
         for key, arr in arrays.items():
-            assert isinstance(arr, np.ndarray), f"Expected ndarray for '{key}', got {type(arr)}"
+            assert isinstance(
+                arr, np.ndarray
+            ), f"Expected ndarray for '{key}', got {type(arr)}"
 
     def test_y_arrays_contain_only_binary_labels(
         self, pipeline: PreprocessingPipeline
@@ -130,15 +141,17 @@ class TestPreprocessingPipelineE2E:
         arrays = pipeline.run()
         for key in ("y_train", "y_val", "y_test"):
             unique = set(arrays[key].tolist())
-            assert unique.issubset({0, 1}), f"{key} contains unexpected labels: {unique}"
+            assert unique.issubset(
+                {0, 1}
+            ), f"{key} contains unexpected labels: {unique}"
 
     def test_x_feature_count_is_correct(self, pipeline: PreprocessingPipeline) -> None:
         """X arrays must have 30 feature columns (Time + V1-V28 + Amount)."""
         arrays = pipeline.run()
         for key in ("X_train", "X_val", "X_test"):
-            assert arrays[key].shape[1] == 30, (
-                f"{key} has {arrays[key].shape[1]} features, expected 30"
-            )
+            assert (
+                arrays[key].shape[1] == 30
+            ), f"{key} has {arrays[key].shape[1]} features, expected 30"
 
     def test_train_is_larger_than_val_and_test(
         self, pipeline: PreprocessingPipeline
@@ -170,8 +183,12 @@ class TestPreprocessingPipelineOutputFiles:
         pipeline.run()
         processed = pipeline_dirs["processed"]
         expected_files = [
-            "X_train.npy", "X_val.npy", "X_test.npy",
-            "y_train.npy", "y_val.npy", "y_test.npy",
+            "X_train.npy",
+            "X_val.npy",
+            "X_test.npy",
+            "y_train.npy",
+            "y_val.npy",
+            "y_test.npy",
         ]
         for filename in expected_files:
             assert (processed / filename).exists(), f"Missing: {filename}"

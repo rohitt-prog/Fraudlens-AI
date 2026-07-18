@@ -110,7 +110,8 @@ class DataSplitter:
         # Stage 1: train vs (val + test)
         temp_size = self.val_ratio + self.test_ratio
         X_train, X_temp, y_train, y_temp = train_test_split(
-            X, y,
+            X,
+            y,
             test_size=temp_size,
             stratify=y,
             random_state=self.random_seed,
@@ -119,15 +120,20 @@ class DataSplitter:
         # Stage 2: val vs test from temp
         test_relative = self.test_ratio / temp_size
         X_val, X_test, y_val, y_test = train_test_split(
-            X_temp, y_temp,
+            X_temp,
+            y_temp,
             test_size=test_relative,
             stratify=y_temp,
             random_state=self.random_seed,
         )
 
         result = SplitResult(
-            X_train=X_train, X_val=X_val, X_test=X_test,
-            y_train=y_train, y_val=y_val, y_test=y_test,
+            X_train=X_train,
+            X_val=X_val,
+            X_test=X_test,
+            y_train=y_train,
+            y_val=y_val,
+            y_test=y_test,
         )
         self._log_distributions(result)
         return result
@@ -159,9 +165,7 @@ class DataSplitter:
             ValueError: If target column or feature columns are missing.
         """
         if TARGET_COLUMN not in df.columns:
-            raise ValueError(
-                f"Target column '{TARGET_COLUMN}' not found in DataFrame."
-            )
+            raise ValueError(f"Target column '{TARGET_COLUMN}' not found in DataFrame.")
         feature_cols = [c for c in ALL_FEATURE_COLUMNS if c in df.columns]
         if len(feature_cols) == 0:
             raise ValueError(
