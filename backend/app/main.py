@@ -4,8 +4,9 @@ This module initializes the FastAPI app, configures middlewares, setting routes,
 and manages startup/shutdown lifespans.
 """
 
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator
+
 from fastapi import FastAPI, status
 
 
@@ -20,7 +21,10 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 # Initialize FastAPI app
 app = FastAPI(
     title="FraudLens AI - API Service",
-    description="REST API service for real-time transaction fraud detection scoring and explainability.",
+    description=(
+        "REST API service for real-time transaction fraud detection "
+        "scoring and explainability."
+    ),
     version="0.1.0",
     lifespan=lifespan,
 )
