@@ -155,7 +155,9 @@ class DataPreprocessor:
                 f"Columns required for scaling not found in DataFrame: {missing}"
             )
 
-    def _log_scaling_stats(self, df_before: pd.DataFrame, df_after: pd.DataFrame) -> None:
+    def _log_scaling_stats(
+        self, df_before: pd.DataFrame, df_after: pd.DataFrame
+    ) -> None:
         """Logs before/after statistics for scaled columns.
 
         Args:

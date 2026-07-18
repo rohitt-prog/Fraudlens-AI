@@ -67,7 +67,9 @@ class DataValidator:
                 Defaults to ml/reports/data_validation_report.json.
         """
         self.df = df
-        self.report_path = report_path or (settings.reports_dir / "data_validation_report.json")
+        self.report_path = report_path or (
+            settings.reports_dir / "data_validation_report.json"
+        )
 
     def validate(self) -> list[ValidationResult]:
         """Runs all validation checks and saves the JSON report.
@@ -147,11 +149,17 @@ class DataValidator:
             ValidationResult: Dtype check result.
         """
         non_numeric = [
-            col for col in self.REQUIRED_COLUMNS
-            if col in self.df.columns and not pd.api.types.is_numeric_dtype(self.df[col])
+            col
+            for col in self.REQUIRED_COLUMNS
+            if col in self.df.columns
+            and not pd.api.types.is_numeric_dtype(self.df[col])
         ]
         passed = len(non_numeric) == 0
-        detail = "All columns are numeric." if passed else f"Non-numeric columns: {non_numeric}"
+        detail = (
+            "All columns are numeric."
+            if passed
+            else f"Non-numeric columns: {non_numeric}"
+        )
         return ValidationResult(
             check="datatypes",
             passed=passed,
@@ -171,7 +179,8 @@ class DataValidator:
         total_nulls = int(null_counts.sum())
         passed = len(problematic) == 0
         detail = (
-            f"No nulls found." if total_nulls == 0
+            f"No nulls found."
+            if total_nulls == 0
             else f"Total nulls: {total_nulls:,}. Columns over {NULL_THRESHOLD_PCT}%: {list(problematic.keys())}"
         )
         return ValidationResult(

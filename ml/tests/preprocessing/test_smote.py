@@ -9,10 +9,10 @@ import numpy as np
 
 from src.preprocessing.smote import SMOTEResampler, SMOTEError
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture()
 def imbalanced_training_data() -> tuple[np.ndarray, np.ndarray]:
@@ -44,6 +44,7 @@ def resampler() -> SMOTEResampler:
 # ---------------------------------------------------------------------------
 # Tests
 # ---------------------------------------------------------------------------
+
 
 class TestSMOTEResamplerSafetyGuard:
     """Tests for the training-only enforcement mechanism."""

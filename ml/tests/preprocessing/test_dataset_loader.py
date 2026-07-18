@@ -10,10 +10,10 @@ from pathlib import Path
 
 from src.preprocessing.dataset_loader import DatasetLoader, DatasetLoadError
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture()
 def valid_csv(tmp_path: Path) -> Path:
@@ -52,6 +52,7 @@ def corrupted_csv(tmp_path: Path) -> Path:
 # ---------------------------------------------------------------------------
 # Tests
 # ---------------------------------------------------------------------------
+
 
 class TestDatasetLoaderFileValidation:
     """Tests for file-level validation in DatasetLoader."""
@@ -110,5 +111,6 @@ class TestDatasetLoaderSuccess:
         loader = DatasetLoader(path=valid_csv)
         df = loader.load()
         import pandas.api.types as ptypes
+
         for col in df.columns:
             assert ptypes.is_numeric_dtype(df[col]), f"Column '{col}' is not numeric"
