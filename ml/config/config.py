@@ -10,8 +10,42 @@ from pathlib import Path
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# Base directory of the project
+# Base directory of the ml subproject (ml/)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+# ==============================================================================
+# Preprocessing Constants
+# ==============================================================================
+
+# Dataset
+DATASET_FILENAME: str = "creditcard.csv"
+TARGET_COLUMN: str = "Class"
+
+# Columns to scale — V1–V28 are already PCA-transformed, leave untouched
+FEATURES_TO_SCALE: list[str] = ["Amount", "Time"]
+
+# All 30 feature columns (Time + V1–V28 + Amount)
+ALL_FEATURE_COLUMNS: list[str] = (
+    ["Time"] + [f"V{i}" for i in range(1, 29)] + ["Amount"]
+)
+
+# Data split ratios (must sum to 1.0)
+TRAIN_RATIO: float = 0.70
+VAL_RATIO: float = 0.15
+TEST_RATIO: float = 0.15
+
+# Reproducibility
+RANDOM_SEED: int = 42
+
+# SMOTE configuration
+SMOTE_SAMPLING_STRATEGY: str = "minority"
+SMOTE_K_NEIGHBORS: int = 5
+
+# Scaler identifier saved in metadata
+SCALER_TYPE: str = "StandardScaler"
+
+# Dataset version for metadata tracking
+DATASET_VERSION: str = "1.0.0"
 
 
 class Settings(BaseSettings):
@@ -57,13 +91,16 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
+    # -------------------------------------------------------------------------
     # Dynamic Path Resolutions (Read-Only Properties)
+    # -------------------------------------------------------------------------
+
     @property
     def root_dir(self) -> Path:
-        """Get the absolute path to the project root directory.
+        """Get the absolute path to the ml subproject root directory.
 
         Returns:
-            Path: The project root directory path.
+            Path: The ml project root directory path.
         """
         return PROJECT_ROOT
 
@@ -139,6 +176,51 @@ class Settings(BaseSettings):
         """
         return PROJECT_ROOT / "mlruns"
 
+    @property
+    def reports_dir(self) -> Path:
+        """Get the absolute path to the reports directory.
 
-# Global settings instance
+        Returns:
+            Path: The reports directory path.
+        """
+        return PROJECT_ROOT / "reports"
+
+    @property
+    def figures_dir(self) -> Path:
+        """Get the absolute path to the EDA figures directory.
+
+        Returns:
+            Path: The figures output directory path.
+        """
+        return self.reports_dir / "figures"
+
+    @property
+    def artifacts_dir(self) -> Path:
+        """Get the absolute path to the ML artifacts directory.
+
+        Returns:
+            Path: The artifacts directory path.
+        """
+        return PROJECT_ROOT / "artifacts"
+
+    @property
+    def scalers_dir(self) -> Path:
+        """Get the absolute path to the fitted scalers directory.
+
+        Returns:
+            Path: The scalers storage directory path.
+        """
+        return self.artifacts_dir / "scalers"
+
+    @property
+    def raw_dataset_path(self) -> Path:
+        """Get the absolute path to the raw creditcard CSV dataset.
+
+        Returns:
+            Path: The dataset CSV file path.
+        """
+        return self.raw_data_dir / DATASET_FILENAME
+
+
+# Global settings singleton
 settings = Settings()

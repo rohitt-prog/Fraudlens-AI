@@ -1,9 +1,21 @@
 # ==============================================================================
-# FraudLens AI - Production Dependencies
+# FraudLens AI - ML Production Dependencies
 # ==============================================================================
 pydantic>=2.0.0
 pydantic-settings>=2.0.0
 python-dotenv>=1.0.0
+
+# Core Data Science
+numpy>=1.26.0
+pandas>=2.2.0
+scikit-learn>=1.4.0
+
+# Class Imbalance
+imbalanced-learn>=0.12.0
+
+# Visualization
+matplotlib>=3.8.0
+seaborn>=0.13.0
 
 # ==============================================================================
 # Development and Testing Dependencies
@@ -14,3 +26,5 @@ isort>=5.13.0
 mypy>=1.9.0
 pytest>=8.0.0
 pytest-cov>=4.1.0
+pytest-mock>=3.12.0
+types-python-dotenv>=1.0.0

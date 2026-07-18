@@ -98,16 +98,29 @@ strict_equality = true
 module = [
     "pytest.*",
     "pydantic.*",
-    "pydantic_settings.*"
+    "pydantic_settings.*",
+    "pandas.*",
+    "numpy.*",
+    "sklearn.*",
+    "imblearn.*",
+    "matplotlib.*",
+    "seaborn.*",
 ]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 minversion = "8.0"
-addopts = "-ra -q --cov=src --cov-report=term-missing"
+addopts = "-ra -q"
 testpaths = [
     "tests",
 ]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*", "config*"]
+
+[tool.setuptools]
+package-dir = {"" = "."}
