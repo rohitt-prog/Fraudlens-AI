@@ -47,9 +47,9 @@ class Settings(BaseSettings):
     # Logging Settings
     LOG_LEVEL: str = Field(default="INFO", description="Global logging level")
 
-    # Configuration for loading from .env
+    # Configuration for loading from .env (check both ml/.env and root .env)
     model_config = SettingsConfigDict(
-        env_file=str(PROJECT_ROOT / ".env"),
+        env_file=(str(PROJECT_ROOT / ".env"), str(PROJECT_ROOT.parent / ".env")),
         env_file_encoding="utf-8",
         extra="ignore",
     )

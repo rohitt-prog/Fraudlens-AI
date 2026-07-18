@@ -1,19 +1,31 @@
 version: '3.8'
 
 services:
-  api:
+  backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
-    container_name: fraudlens_api
+    container_name: fraudlens_backend
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
+      - ./backend:/app
     environment:
       - ENV=development
       - RANDOM_SEED=42
       - API_HOST=0.0.0.0
       - API_PORT=8000
       - API_DEBUG=True
-    # command: python -m uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../backend/Dockerfile # NextJS setup or Dockerfile mapping later
+    container_name: fraudlens_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    # command: npm run dev
+    # For now, we will comment out frontend start until package dependencies are resolved
+    entrypoint: ["echo", "Frontend container environment ready."]
