@@ -5,6 +5,7 @@ safely using the standard `pathlib.Path` objects.
 """
 
 from pathlib import Path
+
 from src.utils.logging import get_logger
 
 logger = get_logger(__name__)

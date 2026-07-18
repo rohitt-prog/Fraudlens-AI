@@ -7,6 +7,7 @@ the logs directory.
 
 import logging
 import sys
+
 from config.config import settings
 
 
@@ -51,7 +52,8 @@ def get_logger(name: str) -> logging.Logger:
     except Exception as e:
         # Fallback to stderr if file logging setup fails
         print(
-            f"Warning: Logging to file failed. Initializing console-only logging. Error: {e}",
+            "Warning: Logging to file failed. Initializing console-only logging. "
+            f"Error: {e}",
             file=sys.stderr,
         )
 
