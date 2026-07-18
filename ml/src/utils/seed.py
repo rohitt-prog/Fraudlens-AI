@@ -6,6 +6,7 @@ ensuring consistent behavior across training and evaluation runs.
 
 import os
 import random
+
 from config.config import settings
 
 
@@ -34,7 +35,7 @@ def set_seed(seed: int | None = None) -> int:
 
     # Conditionally set numpy seed if numpy is installed
     try:
-        import numpy as np
+        import numpy as np  # type: ignore[import-not-found]
 
         np.random.seed(seed)
     except ImportError:
@@ -42,7 +43,7 @@ def set_seed(seed: int | None = None) -> int:
 
     # Conditionally set torch seeds if torch is installed
     try:
-        import torch
+        import torch  # type: ignore[import-not-found]
 
         torch.manual_seed(seed)
         if torch.cuda.is_available():

@@ -6,6 +6,7 @@ as absolute pathlib.Path objects.
 """
 
 from pathlib import Path
+
 from config.config import settings
 
 

@@ -6,6 +6,7 @@ providing a centralized and type-safe configuration system.
 """
 
 from pathlib import Path
+
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
