@@ -41,7 +41,9 @@ class Settings(BaseSettings):
     API_DEBUG: bool = Field(default=True, description="API Debug flag")
 
     # Dashboard Settings
-    DASHBOARD_HOST: str = Field(default="localhost", description="Dashboard host address")
+    DASHBOARD_HOST: str = Field(
+        default="localhost", description="Dashboard host address"
+    )
     DASHBOARD_PORT: int = Field(default=3000, description="Dashboard port number")
 
     # Logging Settings
